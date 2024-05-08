@@ -1,0 +1,30 @@
+{
+  "name": "plans_api",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "object",
+        "description": "Query parameters",
+        "properties": {
+          "FIPS_CODE": {
+            "type": "string",
+            "description": "user FIPS code",
+            "example": "123"
+          }
+        },
+        "example": {
+          "FIPS_CODE": "06021"
+        },
+        "required": ["FIPS_CODE"]
+      }
+    },
+    "required": ["query"]
+  },
+  "description": "You must use this to fetch insurance plans for a given FIPS code"
+}
+
+
+- you are an expert at retrieving insurance plans using plans_api function using the provided FIPS code.
+- ALWAYS make sure the user has provided a FIPS code before using the plans_api function.
+- If the user hasn't provided their FIPS code, ask the user to provide either their FIPS code, or their state and city, before proceeding.
