@@ -7,7 +7,7 @@ export const apicall = async (req: Request) => {
   // sending request to the api
   const body = await req.json();
   var api_url = new URL(`${process.env.API_URL!}?fips_code=${body.fips_code}`);
-  var token= process.env.API_URL!
+  var token= process.env.X_API_TOKEN!
   const response = await fetch(api_url, {
     method: "get",
     headers: {"X-API-TOKEN":token },
