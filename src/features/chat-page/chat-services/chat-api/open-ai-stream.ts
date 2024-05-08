@@ -37,33 +37,33 @@ export const OpenAIStream = (props: {
             streamResponse(response.type, JSON.stringify(response));
           }
         })
-        .on("functionCall", async (functionCall) => {
-          await CreateChatMessage({
-            name: functionCall.name,
-            content: functionCall.arguments,
-            role: "function",
-            chatThreadId: chatThread.id,
-          });
+        // .on("functionCall", async (functionCall) => {      //disabled functioncall message    
+        //   await CreateChatMessage({
+        //     name: functionCall.name,
+        //     content: functionCall.arguments,
+        //     role: "function",
+        //     chatThreadId: chatThread.id,
+        //   });
 
-          const response: AzureChatCompletion = {
-            type: "functionCall",
-            response: functionCall,
-          };
-          streamResponse(response.type, JSON.stringify(response));
-        })
-        .on("functionCallResult", async (functionCallResult) => {
-          const response: AzureChatCompletion = {
-            type: "functionCallResult",
-            response: functionCallResult,
-          };
-          await CreateChatMessage({
-            name: "tool",
-            content: functionCallResult,
-            role: "function",
-            chatThreadId: chatThread.id,
-          });
-          streamResponse(response.type, JSON.stringify(response));
-        })
+        //   const response: AzureChatCompletion = {
+        //     type: "functionCall",
+        //     response: functionCall,
+        //   };
+        //   streamResponse(response.type, JSON.stringify(response));
+        // })
+        // .on("functionCallResult", async (functionCallResult) => {
+        //   const response: AzureChatCompletion = {
+        //     type: "functionCallResult",
+        //     response: functionCallResult,
+        //   };
+        //   await CreateChatMessage({
+        //     name: "tool",
+        //     content: functionCallResult,
+        //     role: "function",
+        //     chatThreadId: chatThread.id,
+        //   });
+        //   streamResponse(response.type, JSON.stringify(response));
+        // })
         .on("abort", (error) => {
           const response: AzureChatCompletionAbort = {
             type: "abort",

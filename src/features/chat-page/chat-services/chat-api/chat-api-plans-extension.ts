@@ -14,7 +14,7 @@ export const apicall = async (req: Request) => {
   });
 
   var result=await response.json()
-  console.log(result)
+  // console.log(result)
   let x = Object.entries(result);
   let y = x.slice(0,20); 
   const obj = Object.fromEntries(y);
