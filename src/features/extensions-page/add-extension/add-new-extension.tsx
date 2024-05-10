@@ -63,6 +63,7 @@ export const AddExtension: FC<Props> = (props) => {
       <SheetContent className="min-w-[680px] flex flex-col">
         <SheetHeader>
           <SheetTitle>Extension</SheetTitle>
+          <SheetTitle>Extension ID: {extension.id}</SheetTitle>
         </SheetHeader>
         <form action={formAction} className="flex-1 flex flex-col ">
           <ScrollArea
