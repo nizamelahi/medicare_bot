@@ -1,13 +1,54 @@
 import fetch from "node-fetch";
+import fs from "fs";
 
 export const apicall = async (req: Request) => {
+  var token_update_time = 4
 
+
+
+  var current_time = Date.now()
+  try {
+
+    var file_data = fs.readFileSync('token_info',
+      { encoding: 'utf8', flag: 'r' });
+    var token_info = JSON.parse(file_data);
+
+  } catch (error) {
+    console.log(error)
+    var file_data = ""
+    token_info = { last_update_time: "0", token: "" }
+  }
+
+
+  var last_update_time = parseInt(token_info["last_update_time"])
+  var token = token_info["token"]
+
+  var hours_diff = (current_time - last_update_time) / (1000 * 3600)
+
+  if (hours_diff > token_update_time) {
+    const auth_body = { api_key: process.env.API_KEY!, portal_name: process.env.PORTAL_NAME! };
+    var auth_url = new URL(`${process.env.AUTH_URL!}`);
+
+    const response = await fetch(auth_url, {
+      method: "post",
+      body: JSON.stringify(auth_body),
+    });
+
+    var auth_resp = await response.json();
+    token = auth_resp["token"]
+
+    token_info["last_update_time"] = Date.now()
+    token_info["token"] = token
+
+    fs.writeFileSync('token_info', JSON.stringify(token_info));
+
+  }
 
   // sending request to the api
   const body = await req.json();
   if (body.plan_id) {
     var api_url = new URL(`${process.env.PLAN_ENTITY_URL!}${body.plan_id}`);
-    var token = process.env.X_API_TOKEN!
+
     const response = await fetch(api_url, {
       method: "get",
       headers: { "X-API-TOKEN": token },
@@ -20,7 +61,6 @@ export const apicall = async (req: Request) => {
   else {
 
     var api_url = new URL(`${process.env.PLANS_COLLECTION_URL!}?fips_code=${body.fips_code}`);
-    var token = process.env.X_API_TOKEN!
     const response = await fetch(api_url, {
       method: "get",
       headers: { "X-API-TOKEN": token },
@@ -60,7 +100,7 @@ export const apicall = async (req: Request) => {
 
 
       let x = Object.entries(result_list);
-      let y = x.slice(0, 80);
+      let y = x.slice(0, 50);
       const obj = Object.fromEntries(y);
 
       return new Response(JSON.stringify(obj));
