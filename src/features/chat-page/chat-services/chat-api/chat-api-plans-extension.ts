@@ -44,7 +44,7 @@ export const apicall = async (req: Request) => {
 
   }
 
-  // sending request to the api
+  // plan_entity api
   const body = await req.json();
   if (body.plan_id) {
     var api_url = new URL(`${process.env.PLAN_ENTITY_URL!}${body.plan_id}`);
@@ -59,7 +59,7 @@ export const apicall = async (req: Request) => {
 
   }
   else {
-
+    //plans api
     var api_url = new URL(`${process.env.PLANS_COLLECTION_URL!}?fips_code=${body.fips_code}`);
     const response = await fetch(api_url, {
       method: "get",
@@ -84,10 +84,10 @@ export const apicall = async (req: Request) => {
             result[i]["part_d"]["details"]["abstract_benefits"] = ""
           }
         // result[i]["package_benefits"]=""
-        var str_total = result[i]["details"]["annual_breakdown_total"]
-        var total = parseInt(str_total)
-        if (total > 0)
-          result_list.push([total, result[i]])
+        var str_rating = result[i]["overall_star_rating"]
+        var rating = parseFloat(str_rating)
+        if ((result[i]["contract_year"] >= 2024))
+          result_list.push([rating, result[i]])
       }
 
       result_list.sort(function (a, b) {
@@ -100,7 +100,7 @@ export const apicall = async (req: Request) => {
 
 
       let x = Object.entries(result_list);
-      let y = x.slice(0, 50);
+      let y = x.slice(0, 40);
       const obj = Object.fromEntries(y);
 
       return new Response(JSON.stringify(obj));
