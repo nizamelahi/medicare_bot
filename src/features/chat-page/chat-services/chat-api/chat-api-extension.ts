@@ -20,7 +20,7 @@ export const ChatApiExtensions = async (props: {
   const systemMessage = await extensionsSystemMessage(chatThread);
   return openAI.beta.chat.completions.runTools(
     {
-      model: "",
+      model: "gpt-4o",
       stream: true,
       messages: [
         {
