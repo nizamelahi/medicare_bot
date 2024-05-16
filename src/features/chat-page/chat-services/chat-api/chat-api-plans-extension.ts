@@ -3,6 +3,7 @@ import fs from "fs";
 
 export const apicall = async (req: Request) => {
   var token_update_time = 4
+  console.log("request recieved")
 
 
 
