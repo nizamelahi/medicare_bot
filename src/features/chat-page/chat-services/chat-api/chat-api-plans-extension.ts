@@ -29,6 +29,7 @@ export const apicall = async (req: Request) => {
     const auth_body = { api_key: process.env.API_KEY!, portal_name: process.env.PORTAL_NAME! };
     var auth_url = new URL(`${process.env.AUTH_URL!}`);
 
+
     const response = await fetch(auth_url, {
       method: "post",
       body: JSON.stringify(auth_body),
@@ -49,10 +50,15 @@ export const apicall = async (req: Request) => {
   if (body.plan_id) {
     var api_url = new URL(`${process.env.PLAN_ENTITY_URL!}${body.plan_id}`);
 
+    var api_req_start_time = Date.now()
     const response = await fetch(api_url, {
       method: "get",
       headers: { "X-API-TOKEN": token },
     });
+
+    var api_req_end_time = Date.now()
+    var api_time = (api_req_end_time - api_req_start_time) / 1000
+    console.log(`api time = ${api_time} seconds`)
 
     var result = await response.json();
     return new Response(JSON.stringify(result));
@@ -61,12 +67,19 @@ export const apicall = async (req: Request) => {
   else {
     //plans api
     var api_url = new URL(`${process.env.PLANS_COLLECTION_URL!}?fips_code=${body.fips_code}`);
+
+    var api_req_start_time = Date.now()
     const response = await fetch(api_url, {
       method: "get",
       headers: { "X-API-TOKEN": token },
     });
 
     var result = await response.json();
+
+    var api_req_end_time = Date.now()
+    var api_time = (api_req_end_time - api_req_start_time) / 1000
+    console.log(`api time = ${api_time} seconds`)
+
     var result_list = []
     try {
       for (var i = 0; i < result.length; i++) {
@@ -102,7 +115,7 @@ export const apicall = async (req: Request) => {
       let x = Object.entries(result_list);
       let y = x.slice(0, 40);
       const obj = Object.fromEntries(y);
-
+      console.log(`total time = ${(Date.now() - api_req_start_time) / 1000} seconds`)
       return new Response(JSON.stringify(obj));
 
     } catch (error) {
