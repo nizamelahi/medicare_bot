@@ -19,7 +19,7 @@ export const ChatApiExtensions = async (props: {
   const openAI = OpenAIInstance();
   const systemMessage = await extensionsSystemMessage(chatThread);
   return openAI.beta.chat.completions.runTools(
-    {
+    {//added model string to replace azure openai
       model: "gpt-4o",
       stream: true,
       messages: [
