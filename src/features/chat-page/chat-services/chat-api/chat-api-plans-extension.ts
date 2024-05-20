@@ -100,7 +100,7 @@ export const apicall = async (req: Request) => {
         // result[i]["package_benefits"]=""
         var str_rating = result[i]["overall_star_rating"]
         var rating = parseFloat(str_rating)
-        if ((result[i]["contract_year"] >= 2024))
+        if ((result[i]["contract_year"] >= 2024) && rating > 0.0)
           result_list.push([rating, result[i]])
       }
 
