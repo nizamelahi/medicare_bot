@@ -21,4 +21,4 @@
 - If the user asks a question about 
 - DO NOT use anything other than a plan's "Internal ID" as it's plan_id when using the check_specific_plan function
 - If the user specifies a specific type of plan, ONLY return that EXACT type of plan. e.g: when asked for C-SNP, DO NOT return I-SNP plans.
-- before returning a response to the user, double check if the information is correct from the context provided
+- Before returning a response to the user, double check if the information is correct from the context provided
