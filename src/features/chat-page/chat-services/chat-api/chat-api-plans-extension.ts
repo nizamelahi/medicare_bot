@@ -4,9 +4,7 @@ import fs from "fs";
 export const apicall = async (req: Request) => {
   var token_update_time = 4
   console.log("request recieved")
-
-
-
+  
   var current_time = Date.now()
   try {
 
@@ -18,6 +16,17 @@ export const apicall = async (req: Request) => {
     console.log(error)
     var file_data = ""
     token_info = { last_update_time: "0", token: "" }
+  }
+
+  try {
+
+    var file_data = fs.readFileSync('zip-to-fips.json',
+      { encoding: 'utf8', flag: 'r' });
+    var zip_to_fips = JSON.parse(file_data);
+
+  } catch (error) {
+    console.log(error)
+    return new Response("error loading zip mapping file")
   }
 
 
@@ -67,7 +76,14 @@ export const apicall = async (req: Request) => {
   }
   else {
     //plans api
-    var api_url = new URL(`${process.env.PLANS_COLLECTION_URL!}?fips_code=${body.fips_code}`);
+    var zip_code = body.zip_code
+    try {
+      var fips_code = zip_to_fips[zip_code]
+
+    } catch (error) {
+      return new Response("zip code not found in mapping")
+    }
+    var api_url = new URL(`${process.env.PLANS_COLLECTION_URL!}?fips_code=${fips_code}`);
 
     var api_req_start_time = Date.now()
     const response = await fetch(api_url, {
