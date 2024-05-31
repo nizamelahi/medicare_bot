@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import fs from "fs";
+import { zip_to_fips } from "./zip-to-fips";
 
 export const apicall = async (req: Request) => {
   var token_update_time = 4
@@ -17,18 +18,6 @@ export const apicall = async (req: Request) => {
     var file_data = ""
     token_info = { last_update_time: "0", token: "" }
   }
-
-  try {
-
-    var file_data = fs.readFileSync('zip-to-fips.json',
-      { encoding: 'utf8', flag: 'r' });
-    var zip_to_fips = JSON.parse(file_data);
-
-  } catch (error) {
-    console.log(error)
-    return new Response("error loading zip mapping file")
-  }
-
 
   var last_update_time = parseInt(token_info["last_update_time"])
   var token = token_info["token"]
@@ -78,7 +67,7 @@ export const apicall = async (req: Request) => {
     //plans api
     var zip_code = body.zip_code
     try {
-      var fips_code = zip_to_fips[zip_code]
+      var fips_code = zip_to_fips[zip_code as keyof typeof zip_to_fips]
 
     } catch (error) {
       return new Response("zip code not found in mapping")
