@@ -46,19 +46,19 @@ export const apicall = async (req: Request) => {
 
   // plan_entity api
   const body = await req.json();
-  if (body.planid)
-    var planid=body.planid
+  if (body.plan_id)
+    var plan_id=body.plan_id
   // else
   // { 
-  //   planid=body["message"]["functionCall"]["parameters"]
+  //   plan_id=body["message"]["functionCall"]["parameters"]
   // }
 
-  console.log(`planid : ${body.planid}`)
+  console.log(`plan_id : ${body.plan_id}`)
 
-  console.log(body)
+  console.log(body["message"]["functionCall"]["parameters"])
 
-  if (body.planid) {
-    var api_url = new URL(`${process.env.PLAN_ENTITY_URL!}${planid}`);
+  if (body.plan_id) {
+    var api_url = new URL(`${process.env.PLAN_ENTITY_URL!}${plan_id}`);
 
     var api_req_start_time = Date.now()
     const response = await fetch(api_url, {
