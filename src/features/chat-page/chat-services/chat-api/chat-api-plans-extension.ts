@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 import fs from "fs";
 import { zip_to_fips } from "./zip-to-fips";
+import { error } from "console";
 
 export const apicall = async (req: Request) => {
   var token_update_time = 4
@@ -48,6 +49,13 @@ export const apicall = async (req: Request) => {
   const body = await req.json();
   if (body.planId)
     var planId=body.planId
+  else
+  {
+    console.log("planId not available in request")
+    console.log(`request: ${body}`)
+    return new Response(JSON.stringify(error));
+  }
+
   // else
   // { 
   //   planId=body["message"]["functionCall"]["parameters"]
