@@ -5,7 +5,7 @@ import { zip_to_fips } from "./zip-to-fips";
 export const apicall = async (req: Request) => {
   var token_update_time = 4
   console.log("request recieved")
-  
+
   var current_time = Date.now()
   try {
 
@@ -46,6 +46,11 @@ export const apicall = async (req: Request) => {
 
   // plan_entity api
   const body = await req.json();
+
+  console.log(`plan_id : ${body.plan_id}`)
+
+  console.log(body)
+
   if (body.plan_id) {
     var api_url = new URL(`${process.env.PLAN_ENTITY_URL!}${body.plan_id}`);
 
