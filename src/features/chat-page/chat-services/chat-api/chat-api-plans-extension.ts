@@ -55,7 +55,7 @@ export const apicall = async (req: Request) => {
 
   console.log(`planid : ${body.planid}`)
 
-  console.log(body["message"]["functionCall"]["parameters"])
+  console.log(body)
 
   if (body.planid) {
     var api_url = new URL(`${process.env.PLAN_ENTITY_URL!}${planid}`);
