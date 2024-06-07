@@ -64,9 +64,10 @@ export const apicall = async (req: Request) => {
 
     var api_req_end_time = Date.now()
     var api_time = (api_req_end_time - api_req_start_time) / 1000
-    console.log(`api time = ${api_time} seconds`)
+    
 
     var result = await response.json();
+    console.log(`api time = ${api_time} seconds`)
     return new Response(JSON.stringify(result));
 
   }
