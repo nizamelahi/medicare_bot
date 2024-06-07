@@ -77,7 +77,7 @@ export const apicall = async (req: Request) => {
       var fips_code = zip_to_fips[zip_code as keyof typeof zip_to_fips]
 
     } catch (error) {
-      return new Response(JSON.stringify({"error":"zip code not found in mapping"}));
+      return new Response(JSON.stringify({"error":error}));
     }
     var api_url = new URL(`${process.env.PLANS_COLLECTION_URL!}?fips_code=${fips_code}`);
 
