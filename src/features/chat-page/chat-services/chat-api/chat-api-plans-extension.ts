@@ -67,7 +67,7 @@ export const apicall = async (req: Request) => {
     
 
     var result = await response.json();
-    console.log(`api time = ${api_time} seconds`)
+    console.log(`api time for plan id check = ${api_time} seconds`)
     return new Response(JSON.stringify(result));
 
   }
