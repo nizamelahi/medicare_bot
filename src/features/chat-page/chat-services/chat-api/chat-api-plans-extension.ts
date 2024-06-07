@@ -47,26 +47,14 @@ export const apicall = async (req: Request) => {
 
   // plan_entity api
   const body = await req.json();
-  if (body.planId)
-    var planId=body.planId
-  else
-  {
-    console.log("planId not available in request")
-    console.log(`request: ${body}`)
-    return new Response(JSON.stringify(error));
-  }
-
-  // else
-  // { 
-  //   planId=body["message"]["functionCall"]["parameters"]
-  // }
 
   console.log(`planId : ${body.planId}`)
 
-  // console.log(body["message"]["functionCall"]["parameters"])
+  console.log(body)
 
   if (body.planId) {
-    var api_url = new URL(`${process.env.PLAN_ENTITY_URL!}${planId}`);
+
+    var api_url = new URL(`${process.env.PLAN_ENTITY_URL!}${body.planId}`);
 
     var api_req_start_time = Date.now()
     const response = await fetch(api_url, {
@@ -82,14 +70,14 @@ export const apicall = async (req: Request) => {
     return new Response(JSON.stringify(result));
 
   }
-  else {
+  else if(body.zip_code){
     //plans api
     var zip_code = body.zip_code
     try {
       var fips_code = zip_to_fips[zip_code as keyof typeof zip_to_fips]
 
     } catch (error) {
-      return new Response("zip code not found in mapping")
+      return new Response(JSON.stringify({"error":"zip code not found in mapping"}));
     }
     var api_url = new URL(`${process.env.PLANS_COLLECTION_URL!}?fips_code=${fips_code}`);
 
@@ -145,10 +133,13 @@ export const apicall = async (req: Request) => {
 
     } catch (error) {
       console.log(error)
-      return new Response(JSON.stringify(error));
+      return new Response(JSON.stringify({"error":error}));
 
     }
   }
-
-
+  else{
+      console.log("neither planId nor zip_code available in request")
+      console.log(`request: ${body}`)
+      return new Response(JSON.stringify({"error":"neither planId nor zip_code available in request"}));
+    }
 };
