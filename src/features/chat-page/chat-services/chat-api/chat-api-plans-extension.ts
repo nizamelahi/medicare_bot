@@ -68,7 +68,8 @@ export const apicall = async (req: Request) => {
 
     var result = await response.json();
     console.log(`api time for plan id check = ${api_time} seconds`)
-    return new Response(JSON.stringify(result));
+    return Response.json(result);
+
 
   }
   else if(body.zip_code){
@@ -78,7 +79,7 @@ export const apicall = async (req: Request) => {
       var fips_code = zip_to_fips[zip_code as keyof typeof zip_to_fips]
 
     } catch (error) {
-      return new Response(JSON.stringify({"error":error}));
+      return Response.json({"error":error});
     }
     var api_url = new URL(`${process.env.PLANS_COLLECTION_URL!}?fips_code=${fips_code}`);
 
@@ -130,17 +131,17 @@ export const apicall = async (req: Request) => {
       let y = x.slice(0, 40);
       const obj = Object.fromEntries(y);
       console.log(`total time = ${(Date.now() - api_req_start_time) / 1000} seconds`)
-      return new Response(JSON.stringify(obj));
+      return Response.json(obj);
 
     } catch (error) {
       console.log(error)
-      return new Response(JSON.stringify({"error":error}));
+      return Response.json({"error":error});
 
     }
   }
   else{
       console.log("neither planId nor zip_code available in request")
       console.log(`request: ${body}`)
-      return new Response(JSON.stringify({"error":"neither planId nor zip_code available in request"}));
+      return Response.json({"error":"neither planId nor zip_code available in request"});
     }
 };
