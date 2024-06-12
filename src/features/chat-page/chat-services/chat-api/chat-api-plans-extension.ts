@@ -47,9 +47,6 @@ export const apicall = async (req: Request) => {
 
   // plan_entity api
   const body = await req.json();
-
-  console.log(`planId : ${body.planId}`)
-
   console.log(body)
 
   if (body.planId) {
